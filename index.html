@@ -28,13 +28,17 @@
         let pyodideReady = false;
         let pyodide;
 
-        // Load Pyodide (Python interpreter in WebAssembly)
+        // Load Pyodide (Python interpreter in WebAssembly) after script is fully loaded
         async function loadPyodideAndPackages() {
             pyodide = await loadPyodide();
             pyodideReady = true;
             console.log('Pyodide is ready');
         }
-        loadPyodideAndPackages();
+
+        // Wait for the Pyodide script to fully load before calling loadPyodide
+        document.addEventListener("DOMContentLoaded", async () => {
+            await loadPyodideAndPackages();
+        });
 
         let code = '';
         let currentLine = 0;
@@ -87,6 +91,12 @@
             document.getElementById('variableDisplay').textContent = '';
         });
     </script>
+
+    <!-- Load Pyodide -->
+    <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
+</body>
+</html>
+
 
     <!-- Load Pyodide -->
     <script src="https://cdn.jsdelivr.net/pyodide/v0.22.1/full/pyodide.js"></script>
